@@ -8,6 +8,6 @@ By Sean Dahan
 from .Classes import Types
 
 
-def read(file_path):
-
-    return Types.Reader(file_path)
+def read(file_path,deli = ","):
+    
+    return Types.Reader(file_path,deli=deli)

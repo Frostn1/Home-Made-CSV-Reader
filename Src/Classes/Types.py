@@ -1,7 +1,8 @@
 class Reader:
-    def __init__(self,filePath):
+    def __init__(self,filePath,deli=","):
         self.file_path = filePath
         self.lineNumber = self.getLength()
+        self.deli = deli
     def getLength(self):
        with open(self.file_path) as file1:
            return len(file1.readlines()) 
@@ -17,7 +18,12 @@ class Reader:
                 text = file1.readlines()
                 new_text = []
                 for line in text:
-                    new_text.append(line.rstrip("\n").split(','))
+                   
+                    if self.deli in line:
+                        new_text.append(line.rstrip("\n").split(self.deli))
+                    elif line.replace(" ","") != " ":
+                        
+                        raise Exception("Delimeter is no correct")
                 return new_text
         else:
             raise Exception("File doesnt exist")
@@ -46,6 +52,25 @@ class Reader:
             return new_text
         else:
             raise Exception("Column index out of range")
-
+    def write(self,text):
+        with open(self.file_path,"w") as file1:
+            file1.write(text)
+    def writeRows(self,rows):
+        with open(self.file_path,"w") as file1:
+            pass
+        with open(self.file_path,"a") as file1:
+            for row in rows:
+                file1.write(row)
+                file1.write("\n")
+    def writeRow(self,row,index):
+        text = self.text()
+        if index > len(text) - 1:
+            raise Exception("Index out of range")
+        else:
+            text[index] = row.split(self.deli)
+            new_list = []
+            for item in text:
+                new_list.append(";".join(item))
+            self.writeRows(new_list)
 
         
